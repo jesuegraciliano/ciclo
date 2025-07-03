@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "50":  { P: 1318.1, HL: 271.83, HV: 423.91 }
         },
         R410A: {
-            "-40": { P: 175.0, HL: -0.00, HV: 262.83 },
+            "-40": { P: 175.0, HL: 0.00, HV: 262.83 },
             "-30": { P: 269.6, HL: 13.99, HV: 267.54 },
             "-20": { P: 399.6, HL: 28.24, HV: 271.89 },
             "-10": { P: 573.1, HL: 42.80, HV: 275.78 },
@@ -42,22 +42,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Tabela de h2 para R134a (exemplo, você pode expandir para outros fluidos)
-    // A ideia é que esta tabela contenha h2 para diferentes temperaturas de evaporação e condensação
+    // Tabela de h2 com dados de exemplo para diferentes fluidos e temperaturas
+    // VOCÊ DEVE PREENCHER ESSES VALORES COM DADOS REAIS E COMPLETOS
     const h2_data = [
-        {"TempEvap": -20, "TempCond": 40, "h2": 430, "fluid": "R134a"},
-        {"TempEvap": -20, "TempCond": 50, "h2": 434.6, "fluid": "R134a"},
-        {"TempEvap": -10, "TempCond": 40, "h2": 426.5, "fluid": "R134a"},
-        {"TempEvap": -10, "TempCond": 50, "h2": 432, "fluid": "R134a"},
-        {"TempEvap": -5, "TempCond": 40, "h2": 425.4, "fluid": "R134a"},
-        {"TempEvap": -5, "TempCond": 50, "h2": 431, "fluid": "R134a"},
-        {"TempEvap": 0, "TempCond": 40, "h2": 424.5, "fluid": "R134a"},
-        {"TempEvap": 0, "TempCond": 50, "h2": 430, "fluid": "R134a"},
-        // Adicione mais dados para outros fluidos e temperaturas se necessário
-        {"TempEvap": -20, "TempCond": 40, "h2": 285.0, "fluid": "R410A"},
-        {"TempEvap": -20, "TempCond": 50, "h2": 288.5, "fluid": "R410A"},
-        {"TempEvap": -10, "TempCond": 40, "h2": 280.0, "fluid": "R410A"},
-        {"TempEvap": -10, "TempCond": 50, "h2": 284.0, "fluid": "R410A"},
+        // Dados para R134a
+        {"TempEvap": -30, "TempCond": 30, "h2": 418.0, "fluid": "R134a"},
+        {"TempEvap": -30, "TempCond": 40, "h2": 420.0, "fluid": "R134a"},
+        {"TempEvap": -30, "TempCond": 50, "h2": 422.0, "fluid": "R134a"},
+        {"TempEvap": -20, "TempCond": 30, "h2": 415.0, "fluid": "R134a"},
+        {"TempEvap": -20, "TempCond": 40, "h2": 430.0, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": -20, "TempCond": 50, "h2": 434.6, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": -10, "TempCond": 30, "h2": 410.0, "fluid": "R134a"},
+        {"TempEvap": -10, "TempCond": 40, "h2": 426.5, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": -10, "TempCond": 50, "h2": 432.0, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": -5, "TempCond": 30, "h2": 408.0, "fluid": "R134a"},
+        {"TempEvap": -5, "TempCond": 40, "h2": 425.4, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": -5, "TempCond": 50, "h2": 431.0, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": 0, "TempCond": 30, "h2": 405.0, "fluid": "R134a"},
+        {"TempEvap": 0, "TempCond": 40, "h2": 424.5, "fluid": "R134a"}, // Seu dado original
+        {"TempEvap": 0, "TempCond": 50, "h2": 430.0, "fluid": "R134a"}, // Seu dado original
+
+        // Dados para R410A (ATENÇÃO: Estes são valores EXCLUSIVAMENTE de EXEMPLO. Substitua por dados reais!)
+        {"TempEvap": -40, "TempCond": 30, "h2": 270.0, "fluid": "R410A"},
+        {"TempEvap": -40, "TempCond": 40, "h2": 275.0, "fluid": "R410A"},
+        {"TempEvap": -40, "TempCond": 50, "h2": 280.0, "fluid": "R410A"},
+        {"TempEvap": -30, "TempCond": 30, "h2": 265.0, "fluid": "R410A"},
+        {"TempEvap": -30, "TempCond": 40, "h2": 270.0, "fluid": "R410A"},
+        {"TempEvap": -30, "TempCond": 50, "h2": 275.0, "fluid": "R410A"},
+        {"TempEvap": -20, "TempCond": 30, "h2": 260.0, "fluid": "R410A"},
+        {"TempEvap": -20, "TempCond": 40, "h2": 268.0, "fluid": "R410A"},
+        {"TempEvap": -20, "TempCond": 50, "h2": 273.0, "fluid": "R410A"},
+        {"TempEvap": -10, "TempCond": 30, "h2": 255.0, "fluid": "R410A"},
+        {"TempEvap": -10, "TempCond": 40, "h2": 265.0, "fluid": "R410A"}, // Seu caso da imagem
+        {"TempEvap": -10, "TempCond": 50, "h2": 270.0, "fluid": "R410A"}, // Seu caso da imagem
+        {"TempEvap": 0, "TempCond": 30, "h2": 250.0, "fluid": "R410A"},
+        {"TempEvap": 0, "TempCond": 40, "h2": 263.0, "fluid": "R410A"},
+        {"TempEvap": 0, "TempCond": 50, "h2": 268.0, "fluid": "R410A"},
+
+        // Dados para R404A (ATENÇÃO: Estes são valores EXCLUSIVAMENTE de EXEMPLO. Substitua por dados reais!)
+        {"TempEvap": -40, "TempCond": 30, "h2": 350.0, "fluid": "R404A"},
+        {"TempEvap": -40, "TempCond": 40, "h2": 360.0, "fluid": "R404A"},
+        {"TempEvap": -40, "TempCond": 50, "h2": 365.0, "fluid": "R404A"},
+        {"TempEvap": -30, "TempCond": 30, "h2": 345.0, "fluid": "R404A"},
+        {"TempEvap": -30, "TempCond": 40, "h2": 355.0, "fluid": "R404A"},
+        {"TempEvap": -30, "TempCond": 50, "h2": 360.0, "fluid": "R404A"},
     ];
 
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
@@ -96,9 +124,33 @@ document.addEventListener('DOMContentLoaded', () => {
             tempCondSelect.add(new Option(label, tempStr));
         });
 
-        // Define valores padrão inteligentes
-        tempEvapSelect.selectedIndex = Math.floor(temps.length / 4); // Uma temp. baixa
-        tempCondSelect.selectedIndex = temps.length - 1; // A temp. mais alta
+        // Define valores padrão inteligentes (pode ser ajustado)
+        // Tentativa de definir valores que existam na h2_data
+        let defaultEvapTemp = temps[0];
+        let defaultCondTemp = temps[temps.length - 1];
+
+        if (fluid === "R134a") {
+            defaultEvapTemp = -10; // Exemplo para R134a
+            defaultCondTemp = 40; // Exemplo para R134a
+        } else if (fluid === "R410A") {
+            defaultEvapTemp = -10; // Exemplo para R410A (como na sua imagem)
+            defaultCondTemp = 50; // Exemplo para R410A (como na sua imagem)
+        }
+
+        // Tenta encontrar e setar os valores padrão
+        const evapOption = [...tempEvapSelect.options].find(opt => parseFloat(opt.value) === defaultEvapTemp);
+        if (evapOption) {
+            tempEvapSelect.value = evapOption.value;
+        } else {
+            tempEvapSelect.selectedIndex = Math.floor(temps.length / 4);
+        }
+
+        const condOption = [...tempCondSelect.options].find(opt => parseFloat(opt.value) === defaultCondTemp);
+        if (condOption) {
+            tempCondSelect.value = condOption.value;
+        } else {
+            tempCondSelect.selectedIndex = temps.length - 1;
+        }
         
         // Atualiza as opções de h2 da tabela após a mudança de fluido ou temperaturas
         populateH2Options();
@@ -124,11 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filteredH2.length > 0) {
             filteredH2.forEach(data => {
-                h2FromTableSelect.add(new Option(`${data.h2.toFixed(2)} kJ/kg (T_evap: ${data.TempEvap}°C, T_cond: ${data.TempCond}°C)`, data.h2));
+                h2FromTableSelect.add(new Option(`${data.h2.toFixed(2)} kJ/kg`, data.h2));
             });
             h2FromTableSelect.selectedIndex = 1; // Seleciona a primeira opção válida
         } else {
             h2FromTableSelect.add(new Option("Nenhum h₂ disponível para estas temperaturas", ""));
+            h2FromTableSelect.value = ""; // Garante que nenhum valor inválido seja selecionado
         }
     }
 
@@ -138,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             h2TableSelectionDiv.style.display = 'block';
             h2ManualInputDiv.style.display = 'none';
             h2ManualInput.value = ''; // Limpa o valor manual
+            populateH2Options(); // Garante que o select de h2 da tabela esteja atualizado
         } else {
             h2TableSelectionDiv.style.display = 'none';
             h2ManualInputDiv.style.display = 'block';
@@ -158,8 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
             h2 = parseFloat(h2ManualInput.value);
         }
 
-        if (!fluid || !TevapKey || !TcondKey || isNaN(h2) || h2 === 0) { // Adicionei h2 === 0 para pegar casos onde o select não tem valor
-            alert("Por favor, preencha todos os campos corretamente.");
+        if (!fluid || !TevapKey || !TcondKey || isNaN(h2) || h2 === 0 || h2FromTableSelect.value === "") { 
+            alert("Por favor, preencha todos os campos corretamente ou selecione um valor de h₂ válido.");
             return;
         }
 
