@@ -42,11 +42,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Tabela de h2 para R134a (exemplo, você pode expandir para outros fluidos)
+    // A ideia é que esta tabela contenha h2 para diferentes temperaturas de evaporação e condensação
+    const h2_data = [
+        {"TempEvap": -20, "TempCond": 40, "h2": 430, "fluid": "R134a"},
+        {"TempEvap": -20, "TempCond": 50, "h2": 434.6, "fluid": "R134a"},
+        {"TempEvap": -10, "TempCond": 40, "h2": 426.5, "fluid": "R134a"},
+        {"TempEvap": -10, "TempCond": 50, "h2": 432, "fluid": "R134a"},
+        {"TempEvap": -5, "TempCond": 40, "h2": 425.4, "fluid": "R134a"},
+        {"TempEvap": -5, "TempCond": 50, "h2": 431, "fluid": "R134a"},
+        {"TempEvap": 0, "TempCond": 40, "h2": 424.5, "fluid": "R134a"},
+        {"TempEvap": 0, "TempCond": 50, "h2": 430, "fluid": "R134a"},
+        // Adicione mais dados para outros fluidos e temperaturas se necessário
+        {"TempEvap": -20, "TempCond": 40, "h2": 285.0, "fluid": "R410A"},
+        {"TempEvap": -20, "TempCond": 50, "h2": 288.5, "fluid": "R410A"},
+        {"TempEvap": -10, "TempCond": 40, "h2": 280.0, "fluid": "R410A"},
+        {"TempEvap": -10, "TempCond": 50, "h2": 284.0, "fluid": "R410A"},
+    ];
+
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
     const fluidSelect = document.getElementById('fluid');
     const tempEvapSelect = document.getElementById('tempEvap');
     const tempCondSelect = document.getElementById('tempCond');
-    const h2Input = document.getElementById('h2');
+    const h2ManualInput = document.getElementById('h2ManualInput');
+    const h2FromTableSelect = document.getElementById('h2FromTable');
+    const h2FromTableToggle = document.getElementById('h2FromTableToggle');
+    const h2TableSelectionDiv = document.getElementById('h2TableSelection');
+    const h2ManualInputDiv = document.getElementById('h2ManualInputDiv');
     const btnCalcular = document.getElementById('btnIrParaCalculo');
     const btnVoltar = document.getElementById('btnVoltar');
     const resultadoDiv = document.getElementById('resultado');
@@ -77,6 +99,50 @@ document.addEventListener('DOMContentLoaded', () => {
         // Define valores padrão inteligentes
         tempEvapSelect.selectedIndex = Math.floor(temps.length / 4); // Uma temp. baixa
         tempCondSelect.selectedIndex = temps.length - 1; // A temp. mais alta
+        
+        // Atualiza as opções de h2 da tabela após a mudança de fluido ou temperaturas
+        populateH2Options();
+    }
+
+    // Popula as opções de h2 na tabela com base no fluido e temperaturas selecionadas
+    function populateH2Options() {
+        const fluid = fluidSelect.value;
+        const tempEvap = parseFloat(tempEvapSelect.value);
+        const tempCond = parseFloat(tempCondSelect.value);
+
+        h2FromTableSelect.innerHTML = "<option value=''>-- selecione as temperaturas --</option>";
+
+        if (!fluid || isNaN(tempEvap) || isNaN(tempCond)) {
+            return;
+        }
+
+        const filteredH2 = h2_data.filter(data => 
+            data.fluid === fluid && 
+            data.TempEvap === tempEvap && 
+            data.TempCond === tempCond
+        );
+
+        if (filteredH2.length > 0) {
+            filteredH2.forEach(data => {
+                h2FromTableSelect.add(new Option(`${data.h2.toFixed(2)} kJ/kg (T_evap: ${data.TempEvap}°C, T_cond: ${data.TempCond}°C)`, data.h2));
+            });
+            h2FromTableSelect.selectedIndex = 1; // Seleciona a primeira opção válida
+        } else {
+            h2FromTableSelect.add(new Option("Nenhum h₂ disponível para estas temperaturas", ""));
+        }
+    }
+
+    // Alterna a visibilidade do campo de entrada manual e do seletor de tabela para h2
+    function toggleH2InputMode() {
+        if (h2FromTableToggle.checked) {
+            h2TableSelectionDiv.style.display = 'block';
+            h2ManualInputDiv.style.display = 'none';
+            h2ManualInput.value = ''; // Limpa o valor manual
+        } else {
+            h2TableSelectionDiv.style.display = 'none';
+            h2ManualInputDiv.style.display = 'block';
+            h2FromTableSelect.value = ''; // Limpa a seleção da tabela
+        }
     }
 
     // Realiza os cálculos e mostra a tela de resultados
@@ -84,9 +150,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const fluid = fluidSelect.value;
         const TevapKey = tempEvapSelect.value;
         const TcondKey = tempCondSelect.value;
-        const h2 = parseFloat(h2Input.value);
+        let h2;
 
-        if (!fluid || !TevapKey || !TcondKey || isNaN(h2)) {
+        if (h2FromTableToggle.checked) {
+            h2 = parseFloat(h2FromTableSelect.value);
+        } else {
+            h2 = parseFloat(h2ManualInput.value);
+        }
+
+        if (!fluid || !TevapKey || !TcondKey || isNaN(h2) || h2 === 0) { // Adicionei h2 === 0 para pegar casos onde o select não tem valor
             alert("Por favor, preencha todos os campos corretamente.");
             return;
         }
@@ -135,6 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- EVENT LISTENERS ---
     fluidSelect.addEventListener('change', populateTemperatureOptions);
+    tempEvapSelect.addEventListener('change', populateH2Options);
+    tempCondSelect.addEventListener('change', populateH2Options);
+    h2FromTableToggle.addEventListener('change', toggleH2InputMode);
     btnCalcular.addEventListener('click', calcularEExibir);
     btnVoltar.addEventListener('click', mostrarTela1);
 
@@ -146,4 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Popula as temperaturas para o primeiro fluido da lista ao carregar
     populateTemperatureOptions();
+    // Inicializa o modo de entrada de h2
+    toggleH2InputMode();
 });
