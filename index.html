@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicativo COP Refrigeração</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="tela1" class="screen active">
+        <h1>Simulador de Ciclo de Refrigeração</h1>
+        <p>Insira os dados do ciclo básico de compressão a vapor:</p>
+        
+        <label for="fluid">Fluido refrigerante:</label>
+        <select id="fluid">
+            </select>
+
+        <label for="tempEvap">Temperatura de evaporação (°C):</label>
+        <select id="tempEvap"><option value="">-- selecione o fluido --</option></select>
+
+        <label for="tempCond">Temperatura de condensação (°C):</label>
+        <select id="tempCond"><option value="">-- selecione o fluido --</option></select>
+
+        <label for="h2">Entalpia na saída do compressor, h₂ (kJ/kg):</label>
+        <input type="number" id="h2" step="0.1" placeholder="Ex: 420.5" />
+
+        <button id="btnIrParaCalculo">Calcular e Ver Resultados</button>
+    </div>
+
+    <div id="tela2" class="screen">
+        <h2>Resultados do Ciclo</h2>
+        <div id="resultado"></div>
+        <button id="btnVoltar">Voltar e Simular Novamente</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
